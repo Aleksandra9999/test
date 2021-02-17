@@ -328,12 +328,12 @@ if __name__ == "__main__":
         #scenes = scenes[i::n] # distribute among workers
         for scene in scenes:
             scene = scene[i::n]
-            for part in scene
-            prepare_sample_scene(
-                part,
-                os.path.join(args.path, 'sample'),
-                os.path.join(args.path_meta, 'sample'),
-            )
+            for part in scene:
+                prepare_sample_scene(
+                    part,
+                    os.path.join(args.path, 'sample'),
+                    os.path.join(args.path_meta, 'sample'),
+                )
 
     elif args.dataset == 'scannet':
         prepare_scannet(
