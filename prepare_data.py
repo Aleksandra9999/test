@@ -328,7 +328,7 @@ if __name__ == "__main__":
         #scenes = scenes[i::n] # distribute among workers
         for scene in scenes:
             print(scene)
-            scene = scene[i::n]
+            scene = [scene][i::n]
             for part in scene:
                 prepare_sample_scene(
                     part,
