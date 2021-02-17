@@ -20,7 +20,7 @@ import os
 import numpy as np
 
 
-def prepare_sample_scene(scenes, path, path_meta, verbose=2):
+def prepare_sample_scene(scene, path, path_meta, verbose=2):
     """Generates a json file for a sample scene in our common format
 
     This wraps all the data about a scene into a single common format
@@ -55,41 +55,41 @@ def prepare_sample_scene(scenes, path, path_meta, verbose=2):
          }
 
     """
-    for scene in scenes:
-        if verbose>0:
-            print('preparing %s'%scene)
-
-        data = {'dataset': 'sample',
-                'path': path,
-                'scene': scene,
-                'frames': []
-            }
     
-        intrinsics = np.loadtxt(os.path.join(path, scene, 'intrinsics.txt'))
+    if verbose>0:
+        print('preparing %s'%scene)
 
-        frame_ids = os.listdir(os.path.join(path, scene, 'color'))
-        frame_ids = [int(os.path.splitext(frame)[0]) for frame in frame_ids]
-        frame_ids =  sorted(frame_ids)
+    data = {'dataset': 'sample',
+            'path': path,
+            'scene': scene,
+            'frames': []
+           }
+    
+    intrinsics = np.loadtxt(os.path.join(path, scene, 'intrinsics.txt'))
 
-        for i, frame_id in enumerate(frame_ids):
-            if verbose>1 and i%25==0:
-                print('preparing %s frame %d/%d'%(scene, i, len(frame_ids)))
+    frame_ids = os.listdir(os.path.join(path, scene, 'color'))
+    frame_ids = [int(os.path.splitext(frame)[0]) for frame in frame_ids]
+    frame_ids =  sorted(frame_ids)
 
-            pose = np.loadtxt(os.path.join(path, scene, 'pose', '%08d.txt' % frame_id))
+    for i, frame_id in enumerate(frame_ids):
+        if verbose>1 and i%25==0:
+            print('preparing %s frame %d/%d'%(scene, i, len(frame_ids)))
 
-            # skip frames with no valid pose
-            if not np.all(np.isfinite(pose)):
-                continue
+        pose = np.loadtxt(os.path.join(path, scene, 'pose', '%08d.txt' % frame_id))
 
-            frame = {'file_name_image': 
-                        os.path.join(path, scene, 'color', '%08d.jpg'%frame_id),
-                    'intrinsics': intrinsics.tolist(),
-                    'pose': pose.tolist(),
-                    }
-            data['frames'].append(frame)
+        # skip frames with no valid pose
+        if not np.all(np.isfinite(pose)):
+            continue
 
-        os.makedirs(os.path.join(path_meta, scene), exist_ok=True)
-        json.dump(data, open(os.path.join(path_meta, scene, 'info.json'), 'w'))
+        frame = {'file_name_image': 
+                     os.path.join(path, scene, 'color', '%08d.jpg'%frame_id),
+                 'intrinsics': intrinsics.tolist(),
+                 'pose': pose.tolist(),
+                }
+        data['frames'].append(frame)
+
+    os.makedirs(os.path.join(path_meta, scene), exist_ok=True)
+    json.dump(data, open(os.path.join(path_meta, scene, 'info.json'), 'w'))
 
 
 

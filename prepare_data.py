@@ -325,10 +325,12 @@ if __name__ == "__main__":
 
     if args.dataset == 'sample':
         scenes = ['sample1', 'sample2', 'sample3']
-        scenes = scenes[i::n] # distribute among workers
+        #scenes = scenes[i::n] # distribute among workers
         for scene in scenes:
+            scene = scene[i::n]
+            for part in scene
             prepare_sample_scene(
-                scene,
+                part,
                 os.path.join(args.path, 'sample'),
                 os.path.join(args.path_meta, 'sample'),
             )
