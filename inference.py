@@ -23,6 +23,7 @@ import torch
 from atlas.data import SceneDataset, parse_splits_list
 from atlas.model import VoxelNet
 import atlas.transforms as transforms
+import trimesh
 
 
 def process(info_file, model, num_frames, save_path, total_scenes_index, total_scenes_count):
@@ -105,6 +106,7 @@ def process(info_file, model, num_frames, save_path, total_scenes_index, total_s
 
     tsdf_pred.save(os.path.join(save_path, '%s.npz'%scene))
     mesh_pred.export(os.path.join(save_path, '%s.ply'%scene))
+    mesh_pred.show()
 
 
 
