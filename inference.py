@@ -24,8 +24,6 @@ from atlas.data import SceneDataset, parse_splits_list
 from atlas.model import VoxelNet
 import atlas.transforms as transforms
 import trimesh
-import matplotlib.pyplot as plt
-%matplotlib inline
 
 
 def process(info_file, model, num_frames, save_path, total_scenes_index, total_scenes_count):
