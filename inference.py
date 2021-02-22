@@ -87,7 +87,7 @@ def process(info_file, model, num_frames, save_path, total_scenes_index, total_s
 
         model.inference1(d['projection'].unsqueeze(0).cuda(),
                          image=d['image'].unsqueeze(0).cuda())
-        if j%25==0:
+        if j%5==0:
             outputs, losses = model.inference2()
 
             tsdf_pred = model.postprocess(outputs)[0]
