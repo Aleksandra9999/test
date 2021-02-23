@@ -87,26 +87,26 @@ def process(info_file, model, num_frames, save_path, total_scenes_index, total_s
 
         model.inference1(d['projection'].unsqueeze(0).cuda(),
                          image=d['image'].unsqueeze(0).cuda())
-        if j%5==0:
-            outputs, losses = model.inference2()
 
-            tsdf_pred = model.postprocess(outputs)[0]
+        outputs, losses = model.inference2()
 
-            # TODO: set origin in model... make consistent with offset above?
-            tsdf_pred.origin = offset.view(1,3).cuda()
-        
+        tsdf_pred = model.postprocess(outputs)[0]
 
-            if 'semseg' in tsdf_pred.attribute_vols:
-                mesh_pred = tsdf_pred.get_mesh('semseg')
+        # TODO: set origin in model... make consistent with offset above?
+        tsdf_pred.origin = offset.view(1,3).cuda()
+    
 
-                # save vertex attributes seperately since trimesh doesn't
-                np.savez(os.path.join(save_path, '%s_attributes_%d.npz'%(scene, j)), 
-                        **mesh_pred.vertex_attributes)
-            else:
-                mesh_pred = tsdf_pred.get_mesh()
+        if 'semseg' in tsdf_pred.attribute_vols:
+            mesh_pred = tsdf_pred.get_mesh('semseg')
 
-            tsdf_pred.save(os.path.join(save_path, '%s_%d.npz'%(scene, j)))
-            mesh_pred.export(os.path.join(save_path, '%s_%d.ply'%(scene, j)))
+            # save vertex attributes seperately since trimesh doesn't
+            np.savez(os.path.join(save_path, '%s_attributes_%d.npz'%(scene, j)), 
+                    **mesh_pred.vertex_attributes)
+        else:
+            mesh_pred = tsdf_pred.get_mesh()
+
+        tsdf_pred.save(os.path.join(save_path, '%s_%d.npz'%(scene, j)))
+        mesh_pred.export(os.path.join(save_path, '%s_%d.ply'%(scene, j)))
     #os.environ['DISPLAY'] = ':1'
     #mesh = trimesh.load(os.path.join(save_path, '%s.ply'%scene), process=False)
     #mesh.show()
