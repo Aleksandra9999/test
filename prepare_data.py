@@ -324,7 +324,7 @@ if __name__ == "__main__":
     assert 0<=i and i<n
 
     if args.dataset == 'sample':
-        scenes = ['sample1', 'sample2', 'sample3']
+        scenes = ['sample1', 'sample2', 'sample3', 'sample4']
         #scenes = scenes[i::n] # distribute among workers
         for scene in scenes:
             print(scene)
