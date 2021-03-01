@@ -108,8 +108,9 @@ def process(info_file, model, num_frames, save_path, total_scenes_index, total_s
         tsdf_pred.save(os.path.join(save_path, '%s_%d.npz'%(scene, j)))
         mesh_pred.export(os.path.join(save_path, '%s_%d.ply'%(scene, j)))
     #os.environ['DISPLAY'] = ':1'
-    #mesh = trimesh.load(os.path.join(save_path, '%s.ply'%scene), process=False)
-    #mesh.show()
+    mesh_pred.export(os.path.join(save_path, '%s.ply'%scene))
+    mesh = trimesh.load(os.path.join(save_path, '%s.ply'%scene), process=False)
+    mesh.show()
 
 
 
